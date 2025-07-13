@@ -207,9 +207,7 @@ function mostrarNotificacion(texto) {
         const cicloDiv = section.querySelector(`#ciclo-${ciclo}`);
         cursosCiclo.forEach(curso => {
           const estadoCalculado = calcularEstado(curso);
-          if (estadoCalculado === "bloqueado") {
-            estados[curso.codigo] = "bloqueado";
-          } else if (estados[curso.codigo] !== "aprobado") {
+          if (estados[curso.codigo] !== "aprobado") {
             estados[curso.codigo] = estadoCalculado;
           }
 
