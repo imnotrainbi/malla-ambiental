@@ -1,103 +1,103 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Malla Interactiva - Ing. Ambiental</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Malla por Ciclo - Ingeniería Ambiental</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .estado-aprobado { background-color: #a7f3d0; }
-    .estado-en-curso { background-color: #fef3c7; }
-    .estado-pendiente { background-color: #fecaca; }
+    .estado-aprobado { background-color: #dcfce7; }
+    .estado-en-curso { background-color: #fef9c3; }
+    .estado-pendiente { background-color: #fef2f2; }
+    .estado-bloqueado { background-color: #e5e7eb; color: #9ca3af; cursor: not-allowed; }
   </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
-  <div class="container mx-auto p-6">
-    <h1 class="text-3xl font-bold mb-4">Malla Interactiva - Ingeniería Ambiental (UAC)</h1>
-    <p class="mb-4">Haz clic en el estado del curso para cambiarlo. Los cursos se habilitan si cumples los prerrequisitos.</p>
-
-    <table class="w-full border text-center">
-      <thead>
-        <tr class="bg-green-200">
-          <th class="p-2">Código</th>
-          <th class="p-2">Curso</th>
-          <th class="p-2">Créditos</th>
-          <th class="p-2">Prerrequisitos</th>
-          <th class="p-2">Estado</th>
-        </tr>
-      </thead>
-      <tbody id="tabla-cursos"></tbody>
-    </table>
-  </div>
+<body class="bg-gray-100 text-gray-900 p-6">
+  <h1 class="text-4xl font-bold mb-6 text-center">Malla Curricular por Ciclo - Ing. Ambiental</h1>
+  <div id="contenedor-ciclos" class="space-y-4"></div>
 
   <script>
     const cursos = [
-      { codigo: 'MAT012', nombre: 'Precálculo', creditos: 5, prereq: [], estado: '❌' },
-      { codigo: 'MAT004', nombre: 'Cálculo I', creditos: 4, prereq: ['MAT012'], estado: '❌' },
-      { codigo: 'MAT005', nombre: 'Cálculo II', creditos: 4, prereq: ['MAT004'], estado: '❌' },
-      { codigo: 'STD004', nombre: 'Estadística I', creditos: 4, prereq: ['MAT012'], estado: '❌' },
-      { codigo: 'STD005', nombre: 'Estadística II', creditos: 3, prereq: ['STD004'], estado: '❌' },
-      { codigo: 'AMB005', nombre: 'Introducción a la Ing. Ambiental', creditos: 3, prereq: [], estado: '❌' },
-      { codigo: 'QUI002', nombre: 'Química I', creditos: 3, prereq: ['AMB005'], estado: '❌' },
-      { codigo: 'QUI003', nombre: 'Química II', creditos: 4, prereq: ['QUI002'], estado: '❌' },
-      { codigo: 'BIO003', nombre: 'Biología General', creditos: 4, prereq: [], estado: '❌' },
-      { codigo: 'BIO007', nombre: 'Microbiología Ambiental', creditos: 4, prereq: ['BIO003'], estado: '❌' },
-      { codigo: 'FIS001', nombre: 'Física I', creditos: 3, prereq: [], estado: '❌' },
-      { codigo: 'FIS002', nombre: 'Física II', creditos: 4, prereq: ['FIS001'], estado: '❌' },
-      { codigo: 'AMB045', nombre: 'Educación Ambiental', creditos: 3, prereq: [], estado: '❌' },
-      { codigo: 'AMB046', nombre: 'Sistemas de Gestión y Políticas Ambientales', creditos: 4, prereq: [], estado: '❌' },
-      { codigo: 'AMB020', nombre: 'Contaminación del Agua', creditos: 4, prereq: [], estado: '❌' },
-      { codigo: 'AMB022', nombre: 'Contaminación del Aire y Acústica', creditos: 4, prereq: ['AMB020'], estado: '❌' },
-      { codigo: 'AMB047', nombre: 'Evaluación del Impacto Ambiental', creditos: 4, prereq: ['AMB046'], estado: '❌' },
-      { codigo: 'AMB011', nombre: 'Diseño de Plantas y Sistemas Regenerativos', creditos: 4, prereq: ['AMB047'], estado: '❌' },
-      { codigo: 'AMB063', nombre: 'Operaciones y Procesos Unitarios II', creditos: 4, prereq: [], estado: '❌' },
-      { codigo: 'AMB009', nombre: 'Manejo y Conservación de Suelos', creditos: 3, prereq: [], estado: '❌' }
+      { ciclo: "I", codigo: "MAT012", nombre: "Precálculo", creditos: 5, prereq: [] },
+      { ciclo: "I", codigo: "AMB005", nombre: "Intro a la Ing. Ambiental", creditos: 3, prereq: [] },
+      { ciclo: "II", codigo: "MAT004", nombre: "Cálculo I", creditos: 4, prereq: ["MAT012"] },
+      { ciclo: "II", codigo: "STD004", nombre: "Estadística I", creditos: 4, prereq: ["MAT012"] },
+      { ciclo: "III", codigo: "MAT005", nombre: "Cálculo II", creditos: 4, prereq: ["MAT004"] },
+      { ciclo: "III", codigo: "BIO003", nombre: "Biología General", creditos: 4, prereq: [] },
+      { ciclo: "IV", codigo: "BIO007", nombre: "Microbiología Ambiental", creditos: 4, prereq: ["BIO003"] },
+      { ciclo: "IV", codigo: "QUI002", nombre: "Química I", creditos: 3, prereq: ["AMB005"] },
+      { ciclo: "V", codigo: "QUI003", nombre: "Química II", creditos: 4, prereq: ["QUI002"] },
+      { ciclo: "VI", codigo: "AMB020", nombre: "Contaminación del Agua", creditos: 4, prereq: [] },
+      { ciclo: "VII", codigo: "AMB022", nombre: "Contaminación del Aire y Acústica", creditos: 4, prereq: ["AMB020"] },
+      { ciclo: "VIII", codigo: "AMB047", nombre: "Evaluación del Impacto Ambiental", creditos: 4, prereq: [] },
+      { ciclo: "IX", codigo: "AMB011", nombre: "Diseño de Plantas y Sistemas Regenerativos", creditos: 4, prereq: ["AMB047"] },
+      { ciclo: "X", codigo: "AMB027", nombre: "Evaluación y Auditoría Ambiental", creditos: 4, prereq: ["AMB011"] }
     ];
 
-    const estados = ['❌', '🟡', '✅'];
+    const estados = {}; // código: estado
+    const container = document.getElementById("contenedor-ciclos");
 
-    function actualizarTabla() {
-      const tbody = document.getElementById('tabla-cursos');
-      tbody.innerHTML = '';
+    function agruparPorCiclo(cursos) {
+      return cursos.reduce((acc, cur) => {
+        acc[cur.ciclo] = acc[cur.ciclo] || [];
+        acc[cur.ciclo].push(cur);
+        return acc;
+      }, {});
+    }
 
-      cursos.forEach((curso, i) => {
-        const habilitado = curso.prereq.every(cod => {
-          const prereqCurso = cursos.find(c => c.codigo === cod);
-          return prereqCurso?.estado === '✅';
-        });
+    function calcularEstado(curso) {
+      if (!curso.prereq.length) return "pendiente";
+      const todosAprobados = curso.prereq.every(p => estados[p] === "aprobado");
+      return todosAprobados ? "pendiente" : "bloqueado";
+    }
 
-        const row = document.createElement('tr');
-        row.className =
-          curso.estado === '✅' ? 'estado-aprobado' :
-          curso.estado === '🟡' ? 'estado-en-curso' : 'estado-pendiente';
+    function render() {
+      container.innerHTML = "";
+      const porCiclo = agruparPorCiclo(cursos);
 
-        row.innerHTML = `
-          <td class="p-2 border">${curso.codigo}</td>
-          <td class="p-2 border">${curso.nombre}</td>
-          <td class="p-2 border">${curso.creditos}</td>
-          <td class="p-2 border">${curso.prereq.join(', ') || '—'}</td>
-          <td class="p-2 border cursor-pointer font-bold" onclick="cambiarEstado(${i})">
-            ${habilitado || curso.estado === '✅' ? curso.estado : '🔒'}
-          </td>
+      Object.entries(porCiclo).forEach(([ciclo, cursosCiclo]) => {
+        const totalCred = cursosCiclo.reduce((sum, c) => sum + c.creditos, 0);
+        const section = document.createElement("details");
+        section.className = "bg-white rounded shadow-md p-4";
+        section.innerHTML = `
+          <summary class="text-xl font-semibold cursor-pointer mb-2">Ciclo ${ciclo} <span class="text-sm text-gray-500">(${totalCred} créditos)</span></summary>
+          <div class="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3" id="ciclo-${ciclo}"></div>
         `;
 
-        tbody.appendChild(row);
+        const cicloDiv = section.querySelector(`#ciclo-${ciclo}`);
+
+        cursosCiclo.forEach(curso => {
+          const estado = calcularEstado(curso);
+          estados[curso.codigo] = estado === "bloqueado" ? "bloqueado" : estados[curso.codigo] || "pendiente";
+
+          const card = document.createElement("div");
+          card.className = `p-3 border rounded shadow-sm transition ${
+            estados[curso.codigo] === "aprobado" ? "estado-aprobado" :
+            estados[curso.codigo] === "pendiente" ? "estado-pendiente" :
+            estados[curso.codigo] === "bloqueado" ? "estado-bloqueado" : "estado-en-curso"
+          }`;
+
+          card.innerHTML = `
+            <p class="font-bold">${curso.codigo}</p>
+            <p>${curso.nombre}</p>
+            <p class="text-sm text-gray-600">${curso.creditos} créditos</p>
+          `;
+
+          if (estados[curso.codigo] !== "bloqueado") {
+            card.addEventListener("click", () => {
+              estados[curso.codigo] = estados[curso.codigo] === "aprobado" ? "pendiente" : "aprobado";
+              render();
+            });
+          }
+
+          cicloDiv.appendChild(card);
+        });
+
+        container.appendChild(section);
       });
     }
 
-    function cambiarEstado(index) {
-      const curso = cursos[index];
-      const habilitado = curso.prereq.every(cod => {
-        const prereqCurso = cursos.find(c => c.codigo === cod);
-        return prereqCurso?.estado === '✅';
-      });
-      if (!habilitado && curso.estado !== '✅') return;
-      const idx = estados.indexOf(curso.estado);
-      curso.estado = estados[(idx + 1) % estados.length];
-      actualizarTabla();
-    }
-
-    actualizarTabla();
+    render();
   </script>
 </body>
 </html>
