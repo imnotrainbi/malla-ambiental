@@ -227,7 +227,7 @@ function mostrarNotificacion(texto) {
           if (estados[curso.codigo] === "aprobado") {
             card.style.setProperty('--color-aprobado', cicloColores[curso.ciclo] || '#dcfce7');
           }
-          if (estado === "bloqueado" && curso.creditosMinimos) {
+          if (estadoCurso === "bloqueado" && curso.creditosMinimos) {
             card.title = `Se requiere mínimo ${curso.creditosMinimos} créditos aprobados.`;
           }
 
