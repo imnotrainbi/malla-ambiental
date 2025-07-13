@@ -171,6 +171,9 @@
             estados[curso.codigo] === "pendiente" ? "estado-pendiente" :
             estados[curso.codigo] === "bloqueado" ? "estado-bloqueado" : "estado-en-curso"
           }`;
+          if (estado === "bloqueado" && curso.creditosMinimos) {
+            card.title = `Se requiere mínimo ${curso.creditosMinimos} créditos aprobados.`;
+          }
 
           card.innerHTML = `
             <p class="font-bold">${curso.codigo}</p>
