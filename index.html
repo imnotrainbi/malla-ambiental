@@ -207,9 +207,10 @@ function mostrarNotificacion(texto) {
         const cicloDiv = section.querySelector(`#ciclo-${ciclo}`);
         cursosCiclo.forEach(curso => {
           const estadoCalculado = calcularEstado(curso);
-          if (estados[curso.codigo] === "aprobado" && estadoCalculado !== "bloqueado") {
-            estados[curso.codigo] = "aprobado";
-          } else {
+          if (
+            estados[curso.codigo] !== "aprobado" &&
+            estados[curso.codigo] !== "pendiente"
+          ) {
             estados[curso.codigo] = estadoCalculado;
           }
 
@@ -236,7 +237,8 @@ function mostrarNotificacion(texto) {
 
           if (estados[curso.codigo] !== "bloqueado") {
             card.addEventListener("click", () => {
-              estados[curso.codigo] = estados[curso.codigo] === "aprobado" ? "pendiente" : "aprobado";
+              const nuevoEstado = estados[curso.codigo] === "aprobado" ? "pendiente" : "aprobado";
+              estados[curso.codigo] = nuevoEstado;
               mostrarNotificacion(`Progreso guardado: ${curso.nombre} marcado como ${estados[curso.codigo]}`);
               if (estados[curso.codigo] === "aprobado") {
                 card.classList.add("animado");
