@@ -4,20 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Malla Curricular por Ciclo - Ing. Ambiental</title>
-  <script src="https://cdn.tailwindcss.com">function reiniciarProgreso() {
-    if (confirm("¿Estás seguro de que deseas reiniciar todo tu progreso?")) {
-      localStorage.removeItem("estados-cursos");
-      location.reload();
-    }
-  }
-function filtrar(estadoFiltro) {
-  filtroActivo = estadoFiltro;
-  document.querySelectorAll("[data-estado]").forEach(card => {
-    card.style.display = (estadoFiltro === 'todos' || card.dataset.estado === estadoFiltro) ? "block" : "none";
-  });
-});
-}
-</script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
     .estado-aprobado { background-color: var(--color-aprobado); }
     .estado-en-curso { background-color: #fef9c3; }
