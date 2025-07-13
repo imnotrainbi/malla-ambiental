@@ -156,9 +156,10 @@
         const totalCred = cursosCiclo.reduce((sum, c) => sum + c.creditos, 0);
         const section = document.createElement("div");
         section.className = "bg-white rounded shadow-md p-4";
-        section.innerHTML = `<h2 class="text-xl font-semibold mb-2">Ciclo ${ciclo} <span class="text-sm text-gray-500">(${totalCred} créditos)</span></h2>`
-          <div class="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3" id="ciclo-${ciclo}"></div>
-        `;
+        section.innerHTML = `
+  <h2 class="text-xl font-semibold mb-2">Ciclo ${ciclo} <span class="text-sm text-gray-500">(${totalCred} créditos)</span></h2>
+  <div class="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3" id="ciclo-${ciclo}"></div>
+`;
 
         const cicloDiv = section.querySelector(`#ciclo-${ciclo}`);
         cursosCiclo.forEach(curso => {
