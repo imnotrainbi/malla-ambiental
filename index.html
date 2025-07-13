@@ -4,7 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Malla Curricular por Ciclo - Ing. Ambiental</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com">function reiniciarProgreso() {
+  if (confirm("¿Estás seguro de que deseas reiniciar todo tu progreso?")) {
+    localStorage.removeItem("estados-cursos");
+    location.reload();
+  }
+}
+
+function mostrarNotificacion(texto) {
+  const notif = document.createElement("div");
+  notif.textContent = texto;
+  notif.className = "fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-md animate-bounce z-50";
+  document.body.appendChild(notif);
+  setTimeout(() => notif.remove(), 2000);
+}
+</script>
   <style>
     .estado-aprobado { background-color: var(--color-aprobado); }
     .estado-en-curso { background-color: #fef9c3; }
@@ -225,11 +239,13 @@
           if (estados[curso.codigo] !== "bloqueado") {
             card.addEventListener("click", () => {
               estados[curso.codigo] = estados[curso.codigo] === "aprobado" ? "pendiente" : "aprobado";
+              mostrarNotificacion(`Progreso guardado: ${curso.nombre} marcado como ${estados[curso.codigo]}`);
               if (estados[curso.codigo] === "aprobado") {
                 card.classList.add("animado");
                 setTimeout(() => card.classList.remove("animado"), 300);
               }
               render();
+filtrar(filtroActivo);
 filtrar(filtroActivo);
             });
           }
