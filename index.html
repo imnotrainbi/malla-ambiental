@@ -93,14 +93,14 @@
       { ciclo: "IX", codigo: "AMB011", nombre: "Diseño de Plantas y Sistemas Regenerativos", creditos: 4, prereq: ["AMB047"] },
       { ciclo: "IX", codigo: "AMB048", nombre: "Desarrollo Sostenible y Servicios Ambientales", creditos: 4, prereq: ["AMB049"] },
       { ciclo: "IX", codigo: "AMB025", nombre: "Modelación y Simulación de Sistemas Ambientales", creditos: 4, prereq: ["AMB082"] },
-      { ciclo: "IX", codigo: "INV003", nombre: "Seminario Taller de Tesis I", creditos: 4, prereq: [] },
+      { ciclo: "IX", codigo: "INV003", nombre: "Seminario Taller de Tesis I", creditos: 4, prereq: [], creditosMinimos: 120 },
       { ciclo: "IX", codigo: "ECO064", nombre: "Economía Ambiental", creditos: 3, prereq: [] },
       { ciclo: "IX", codigo: "EEE III", nombre: "Electivo III", creditos: 3, prereq: [] },
 
       // CICLO X
       { ciclo: "X", codigo: "AMB026", nombre: "Formulación y Evaluación de Proyectos Ambientales", creditos: 4, prereq: ["INV003"] },
       { ciclo: "X", codigo: "AMB068", nombre: "Acondicionamiento y Ordenamiento Territorial", creditos: 3, prereq: ["AMB048"] },
-      { ciclo: "X", codigo: "INV004", nombre: "Seminario Taller de Tesis II", creditos: 4, prereq: ["INV003"] },
+      { ciclo: "X", codigo: "INV004", nombre: "Seminario Taller de Tesis II", creditos: 4, prereq: ["INV003"], creditosMinimos: 160 },
       { ciclo: "X", codigo: "AMB027", nombre: "Evaluación y Auditoría Ambiental", creditos: 4, prereq: ["AMB011"] },
       { ciclo: "X", codigo: "DER118", nombre: "Legislación Ambiental", creditos: 4, prereq: [] },
       { ciclo: "X", codigo: "EEE IV", nombre: "Electivo IV", creditos: 3, prereq: [] },
@@ -139,6 +139,9 @@
     }
 
     function calcularEstado(curso) {
+      if (curso.creditosMinimos && calcularCreditosAprobados() < curso.creditosMinimos) {
+        return "bloqueado";
+      }
       if (!curso.prereq.length) return "pendiente";
       const todosAprobados = curso.prereq.every(p => estados[p] === "aprobado");
       return todosAprobados ? "pendiente" : "bloqueado";
