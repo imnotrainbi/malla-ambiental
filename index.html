@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Malla por Ciclo - Ingeniería Ambiental</title>
+  <title>Malla Curricular por Ciclo - Ing. Ambiental</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     .estado-aprobado { background-color: #dcfce7; }
@@ -14,9 +14,16 @@
 </head>
 <body class="bg-gray-100 text-gray-900 p-6">
   <h1 class="text-4xl font-bold mb-6 text-center">Malla Curricular por Ciclo - Ing. Ambiental</h1>
+  <div id="resumen-creditos" class="text-center text-lg font-semibold text-green-700 mb-6"></div>
   <div id="contenedor-ciclos" class="space-y-4"></div>
 
   <script>
+    function calcularCreditosAprobados() {
+      return cursos.reduce((total, c) => {
+        return estados[c.codigo] === "aprobado" ? total + c.creditos : total;
+      }, 0);
+    }
+
     const cursos = [
       // CICLO I
       { ciclo: "I", codigo: "ANS006", nombre: "Antropología: Hombre, Cultura y Sociedad", creditos: 3, prereq: [] },
@@ -117,10 +124,9 @@
       { ciclo: "Electivos", codigo: "AMB053", nombre: "Resolución de Conflictos Ambientales", creditos: 3, prereq: [] },
       { ciclo: "Electivos", codigo: "AMB078", nombre: "Ingeniería de Aguas Residuales", creditos: 3, prereq: [] },
       { ciclo: "Electivos", codigo: "EEE016", nombre: "Seguridad y Salud en el Trabajo y Medio Ambiente", creditos: 3, prereq: [] }
-
     ];
 
-    const estados = {}; // código: estado
+    const estados = {};
     const container = document.getElementById("contenedor-ciclos");
 
     function agruparPorCiclo(cursos) {
@@ -139,8 +145,9 @@
 
     function render() {
       container.innerHTML = "";
-      const porCiclo = agruparPorCiclo(cursos);
+      document.getElementById("resumen-creditos").innerText = `Créditos aprobados: ${calcularCreditosAprobados()} / ${cursos.reduce((sum, c) => sum + c.creditos, 0)}`;
 
+      const porCiclo = agruparPorCiclo(cursos);
       Object.entries(porCiclo).forEach(([ciclo, cursosCiclo]) => {
         const totalCred = cursosCiclo.reduce((sum, c) => sum + c.creditos, 0);
         const section = document.createElement("details");
@@ -151,7 +158,6 @@
         `;
 
         const cicloDiv = section.querySelector(`#ciclo-${ciclo}`);
-
         cursosCiclo.forEach(curso => {
           const estado = calcularEstado(curso);
           estados[curso.codigo] = estado === "bloqueado" ? "bloqueado" : estados[curso.codigo] || "pendiente";
