@@ -123,6 +123,10 @@
       { ciclo: "Electivos", codigo: "EEE016", nombre: "Seguridad y Salud en el Trabajo y Medio Ambiente", creditos: 3, prereq: [] }
     ];
 
+    function calcularCreditosAprobados() {
+      return cursos.reduce((total, c) => estados[c.codigo] === "aprobado" ? total + c.creditos : total, 0);
+    }
+
     const estados = {};
     const container = document.getElementById("contenedor-ciclos");
 
@@ -135,12 +139,6 @@
     }
 
     function calcularEstado(curso) {
-      function calcularCreditosAprobados() {
-  return cursos.reduce((total, c) => {
-    return estados[c.codigo] === "aprobado" ? total + c.creditos : total;
-  }, 0);
-}
-
       if (!curso.prereq.length) return "pendiente";
       const todosAprobados = curso.prereq.every(p => estados[p] === "aprobado");
       return todosAprobados ? "pendiente" : "bloqueado";
