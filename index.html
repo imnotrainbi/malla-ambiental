@@ -6,7 +6,7 @@
   <title>Malla Curricular por Ciclo - Ing. Ambiental</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .estado-aprobado { background-color: #dcfce7; }
+    .estado-aprobado { background-color: var(--color-aprobado); }
     .estado-en-curso { background-color: #fef9c3; }
     .estado-pendiente { background-color: #fef2f2; }
     .estado-bloqueado { background-color: #e5e7eb; color: #9ca3af; cursor: not-allowed; }
@@ -106,21 +106,20 @@
       { ciclo: "X", codigo: "EEE IV", nombre: "Electivo IV", creditos: 3, prereq: [], creditosMinimos: 170 },
 
 
-      { ciclo: "Electivos", codigo: "AMB069", nombre: "Tópicos de Producción Más Limpia", creditos: 3, prereq: [] },
-      { ciclo: "Electivos", codigo: "AMB070", nombre: "Escenarios Climáticos", creditos: 3, prereq: [] },
-      { ciclo: "Electivos", codigo: "AMB071", nombre: "Mecanismos de Retribución por Servicios Ecosistémicos", creditos: 3, prereq: [] },
-      { ciclo: "Electivos", codigo: "AMB072", nombre: "Ecología Aplicada", creditos: 3, prereq: [] },
-      { ciclo: "Electivos", codigo: "AMB039", nombre: "Manejo de Residuos Peligrosos", creditos: 3, prereq: [] },
-      { ciclo: "Electivos", codigo: "AMB040", nombre: "Instrumentación y Control Ambiental", creditos: 3, prereq: [] },
-      { ciclo: "Electivos", codigo: "AMB073", nombre: "Sistemas Integrados de Gestión", creditos: 3, prereq: [] },
-      { ciclo: "Electivos", codigo: "AMB033", nombre: "Energías No Convencionales", creditos: 3, prereq: [] },
-      { ciclo: "Electivos", codigo: "AMB074", nombre: "Control de Efluentes Gaseosos", creditos: 3, prereq: [] },
-      { ciclo: "Electivos", codigo: "AMB075", nombre: "Evaluación y Manejo de Riesgos Naturales", creditos: 3, prereq: [] },
-      { ciclo: "Electivos", codigo: "AMB076", nombre: "Manejo Ambiental de Áreas Protegidas y Ecoturismo", creditos: 3, prereq: [] },
-      { ciclo: "Electivos", codigo: "AMB077", nombre: "Glaciología y Cambio Climático", creditos: 3, prereq: [] },
-      { ciclo: "Electivos", codigo: "AMB053", nombre: "Resolución de Conflictos Ambientales", creditos: 3, prereq: [] },
-      { ciclo: "Electivos", codigo: "AMB078", nombre: "Ingeniería de Aguas Residuales", creditos: 3, prereq: [] },
-      { ciclo: "Electivos", codigo: "EEE016", nombre: "Seguridad y Salud en el Trabajo y Medio Ambiente", creditos: 3, prereq: [] }
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
     ];
 
     function calcularCreditosAprobados() {
@@ -148,6 +147,18 @@
     }
 
     function render() {
+      const cicloColores = {
+        "I": "#dcfce7",
+        "II": "#bbf7d0",
+        "III": "#a7f3d0",
+        "IV": "#99f6e4",
+        "V": "#bfdbfe",
+        "VI": "#c4b5fd",
+        "VII": "#f0abfc",
+        "VIII": "#f9a8d4",
+        "IX": "#fdba74",
+        "X": "#fde68a"
+      };
       container.innerHTML = "";
       document.getElementById("resumen-creditos").innerText = `Créditos aprobados: ${calcularCreditosAprobados()} / ${cursos.reduce((sum, c) => sum + c.creditos, 0)}`;
 
@@ -175,6 +186,9 @@
             estados[curso.codigo] === "pendiente" ? "estado-pendiente" :
             estados[curso.codigo] === "bloqueado" ? "estado-bloqueado" : "estado-en-curso"
           }`;
+          if (estados[curso.codigo] === "aprobado") {
+            card.style.setProperty('--color-aprobado', cicloColores[curso.ciclo] || '#dcfce7');
+          }
           if (estado === "bloqueado" && curso.creditosMinimos) {
             card.title = `Se requiere mínimo ${curso.creditosMinimos} créditos aprobados.`;
           }
