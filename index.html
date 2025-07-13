@@ -18,20 +18,106 @@
 
   <script>
     const cursos = [
+      // CICLO I
+      { ciclo: "I", codigo: "ANS006", nombre: "Antropología: Hombre, Cultura y Sociedad", creditos: 3, prereq: [] },
+      { ciclo: "I", codigo: "AMB005", nombre: "Introducción a la Ingeniería Ambiental", creditos: 3, prereq: [] },
+      { ciclo: "I", codigo: "AMB055", nombre: "Medio Ambiente y Desarrollo Sostenible", creditos: 3, prereq: [] },
+      { ciclo: "I", codigo: "EDU024", nombre: "Métodos y Técnicas de Estudio Universitario", creditos: 3, prereq: [] },
       { ciclo: "I", codigo: "MAT012", nombre: "Precálculo", creditos: 5, prereq: [] },
-      { ciclo: "I", codigo: "AMB005", nombre: "Intro a la Ing. Ambiental", creditos: 3, prereq: [] },
+      { ciclo: "I", codigo: "LLI004", nombre: "Comunicación Oral y Escrita", creditos: 4, prereq: [] },
+      { ciclo: "I", codigo: "IDM006", nombre: "Taller de Lengua Nativa: Quechua", creditos: 1, prereq: [] },
+
+      // CICLO II
       { ciclo: "II", codigo: "MAT004", nombre: "Cálculo I", creditos: 4, prereq: ["MAT012"] },
+      { ciclo: "II", codigo: "AMB045", nombre: "Educación Ambiental para la Sostenibilidad", creditos: 3, prereq: ["AMB005"] },
       { ciclo: "II", codigo: "STD004", nombre: "Estadística I", creditos: 4, prereq: ["MAT012"] },
+      { ciclo: "II", codigo: "QUI002", nombre: "Química I", creditos: 3, prereq: ["AMB005"] },
+      { ciclo: "II", codigo: "ANS007", nombre: "Realidad Nacional y Globalización", creditos: 3, prereq: ["ANS006"] },
+      { ciclo: "II", codigo: "PSI003", nombre: "Desarrollo Personal", creditos: 3, prereq: [] },
+      { ciclo: "II", codigo: "SIS106", nombre: "TIC: Taller de Tecnologías de la Información", creditos: 2, prereq: [] },
+
+      // CICLO III (ejemplo)
       { ciclo: "III", codigo: "MAT005", nombre: "Cálculo II", creditos: 4, prereq: ["MAT004"] },
+      { ciclo: "III", codigo: "STD005", nombre: "Estadística II", creditos: 3, prereq: ["STD004"] },
+      { ciclo: "III", codigo: "QUI003", nombre: "Química II", creditos: 4, prereq: ["QUI002"] },
       { ciclo: "III", codigo: "BIO003", nombre: "Biología General", creditos: 4, prereq: [] },
+      { ciclo: "III", codigo: "AMB013", nombre: "Climatología y Meteorología", creditos: 4, prereq: [] },
+      { ciclo: "III", codigo: "FIL005", nombre: "Pensamiento Filosófico y Ciudadanía", creditos: 3, prereq: [] },
+
+      // // CICLO IV
       { ciclo: "IV", codigo: "BIO007", nombre: "Microbiología Ambiental", creditos: 4, prereq: ["BIO003"] },
-      { ciclo: "IV", codigo: "QUI002", nombre: "Química I", creditos: 3, prereq: ["AMB005"] },
-      { ciclo: "V", codigo: "QUI003", nombre: "Química II", creditos: 4, prereq: ["QUI002"] },
+      { ciclo: "IV", codigo: "FIS001", nombre: "Física I", creditos: 3, prereq: [] },
+      { ciclo: "IV", codigo: "INV001", nombre: "Metodología de la Investigación", creditos: 4, prereq: ["STD005"] },
+      { ciclo: "IV", codigo: "AMB056", nombre: "Procesos Ambientales", creditos: 4, prereq: ["QUI003"] },
+      { ciclo: "IV", codigo: "CIV072", nombre: "Topografía", creditos: 3, prereq: [] },
+
+      // CICLO V
+      { ciclo: "V", codigo: "AMB007", nombre: "Contaminación de Suelos", creditos: 4, prereq: ["AMB056"] },
+      { ciclo: "V", codigo: "FIS002", nombre: "Física II", creditos: 4, prereq: ["FIS001"] },
+      { ciclo: "V", codigo: "AMB062", nombre: "Operaciones y Procesos Unitarios I", creditos: 3, prereq: ["AMB056"] },
+      { ciclo: "V", codigo: "AMB014", nombre: "Toxicología Ambiental", creditos: 4, prereq: ["BIO007"] },
+      { ciclo: "V", codigo: "AMB006", nombre: "Mitigación y Adaptación al Cambio Climático", creditos: 4, prereq: [] },
+      { ciclo: "V", codigo: "AMB064", nombre: "Ética y Deontología Profesional en Ing. Ambiental", creditos: 3, prereq: [] },
+
+      // CICLO VI
+      { ciclo: "VI", codigo: "AMB063", nombre: "Operaciones y Procesos Unitarios II", creditos: 4, prereq: ["AMB062"] },
+      { ciclo: "VI", codigo: "AMB061", nombre: "Saneamiento Ambiental y Gestión de Riesgos", creditos: 4, prereq: [] },
+      { ciclo: "VI", codigo: "AMB009", nombre: "Manejo y Conservación de Suelos", creditos: 3, prereq: ["AMB007"] },
+      { ciclo: "VI", codigo: "SIS044", nombre: "Taller de Algorítmica y Programación", creditos: 3, prereq: [] },
+      { ciclo: "VI", codigo: "AMB046", nombre: "Sistemas de Gestión y Políticas Ambientales", creditos: 4, prereq: [] },
       { ciclo: "VI", codigo: "AMB020", nombre: "Contaminación del Agua", creditos: 4, prereq: [] },
+
+      // CICLO VII
+      { ciclo: "VII", codigo: "ARQ087", nombre: "Sistemas de Información Geográfica", creditos: 3, prereq: [] },
+      { ciclo: "VII", codigo: "AMB023", nombre: "Tecnología de Ingeniería Ambiental", creditos: 3, prereq: [] },
       { ciclo: "VII", codigo: "AMB022", nombre: "Contaminación del Aire y Acústica", creditos: 4, prereq: ["AMB020"] },
-      { ciclo: "VIII", codigo: "AMB047", nombre: "Evaluación del Impacto Ambiental", creditos: 4, prereq: [] },
+      { ciclo: "VII", codigo: "AMB056", nombre: "Ingeniería y Gestión de Residuos Sólidos", creditos: 4, prereq: [] },
+      { ciclo: "VII", codigo: "ECO056", nombre: "Ingeniería Económica", creditos: 3, prereq: [] },
+      { ciclo: "VII", codigo: "ARQ047", nombre: "Expresión Gráfica", creditos: 2, prereq: [] },
+      { ciclo: "VII", codigo: "EEE I", nombre: "Electivo I", creditos: 3, prereq: [] },
+
+      // CICLO VIII
+      { ciclo: "VIII", codigo: "AMB082", nombre: "Tecnologías Limpias en los Procesos Industriales", creditos: 4, prereq: ["AMB023"] },
+      { ciclo: "VIII", codigo: "AMB015", nombre: "Monitoreo Ambiental", creditos: 3, prereq: ["AMB022"] },
+      { ciclo: "VIII", codigo: "AMB047", nombre: "Evaluación del Impacto Ambiental", creditos: 4, prereq: ["AMB046"] },
+      { ciclo: "VIII", codigo: "AMB065", nombre: "Hidrología y Manejo de Cuencas", creditos: 4, prereq: ["ARQ087"] },
+      { ciclo: "VIII", codigo: "AMB049", nombre: "Evaluación y Manejo de Riesgos Ambientales", creditos: 4, prereq: [] },
+      { ciclo: "VIII", codigo: "EEE II", nombre: "Electivo II", creditos: 3, prereq: [] },
+
+      // CICLO IX
       { ciclo: "IX", codigo: "AMB011", nombre: "Diseño de Plantas y Sistemas Regenerativos", creditos: 4, prereq: ["AMB047"] },
-      { ciclo: "X", codigo: "AMB027", nombre: "Evaluación y Auditoría Ambiental", creditos: 4, prereq: ["AMB011"] }
+      { ciclo: "IX", codigo: "AMB048", nombre: "Desarrollo Sostenible y Servicios Ambientales", creditos: 4, prereq: ["AMB049"] },
+      { ciclo: "IX", codigo: "AMB025", nombre: "Modelación y Simulación de Sistemas Ambientales", creditos: 4, prereq: ["AMB082"] },
+      { ciclo: "IX", codigo: "INV003", nombre: "Seminario Taller de Tesis I", creditos: 4, prereq: [] },
+      { ciclo: "IX", codigo: "ECO064", nombre: "Economía Ambiental", creditos: 3, prereq: [] },
+      { ciclo: "IX", codigo: "EEE III", nombre: "Electivo III", creditos: 3, prereq: [] },
+
+      // CICLO X
+      { ciclo: "X", codigo: "AMB026", nombre: "Formulación y Evaluación de Proyectos Ambientales", creditos: 4, prereq: ["INV003"] },
+      { ciclo: "X", codigo: "AMB068", nombre: "Acondicionamiento y Ordenamiento Territorial", creditos: 3, prereq: ["AMB048"] },
+      { ciclo: "X", codigo: "INV004", nombre: "Seminario Taller de Tesis II", creditos: 4, prereq: ["INV003"] },
+      { ciclo: "X", codigo: "AMB027", nombre: "Evaluación y Auditoría Ambiental", creditos: 4, prereq: ["AMB011"] },
+      { ciclo: "X", codigo: "DER118", nombre: "Legislación Ambiental", creditos: 4, prereq: [] },
+      { ciclo: "X", codigo: "EEE IV", nombre: "Electivo IV", creditos: 3, prereq: [] }
+
+      // ELECTIVOS OPCIONALES
+      { ciclo: "Electivos", codigo: "AMB069", nombre: "Tópicos de Producción Más Limpia", creditos: 3, prereq: [] },
+      { ciclo: "Electivos", codigo: "AMB070", nombre: "Escenarios Climáticos", creditos: 3, prereq: [] },
+      { ciclo: "Electivos", codigo: "AMB071", nombre: "Mecanismos de Retribución por Servicios Ecosistémicos", creditos: 3, prereq: [] },
+      { ciclo: "Electivos", codigo: "AMB072", nombre: "Ecología Aplicada", creditos: 3, prereq: [] },
+      { ciclo: "Electivos", codigo: "AMB039", nombre: "Manejo de Residuos Peligrosos", creditos: 3, prereq: [] },
+      { ciclo: "Electivos", codigo: "AMB040", nombre: "Instrumentación y Control Ambiental", creditos: 3, prereq: [] },
+      { ciclo: "Electivos", codigo: "AMB073", nombre: "Sistemas Integrados de Gestión", creditos: 3, prereq: [] },
+      { ciclo: "Electivos", codigo: "AMB033", nombre: "Energías No Convencionales", creditos: 3, prereq: [] },
+      { ciclo: "Electivos", codigo: "AMB032", nombre: "Contaminación Minera", creditos: 3, prereq: [] },
+      { ciclo: "Electivos", codigo: "AMB074", nombre: "Control de Efluentes Gaseosos", creditos: 3, prereq: [] },
+      { ciclo: "Electivos", codigo: "AMB075", nombre: "Evaluación y Manejo de Riesgos Naturales", creditos: 3, prereq: [] },
+      { ciclo: "Electivos", codigo: "AMB076", nombre: "Manejo Ambiental de Áreas Protegidas y Ecoturismo", creditos: 3, prereq: [] },
+      { ciclo: "Electivos", codigo: "AMB077", nombre: "Glaciología y Cambio Climático", creditos: 3, prereq: [] },
+      { ciclo: "Electivos", codigo: "AMB053", nombre: "Resolución de Conflictos Ambientales", creditos: 3, prereq: [] },
+      { ciclo: "Electivos", codigo: "AMB078", nombre: "Ingeniería de Aguas Residuales", creditos: 3, prereq: [] },
+      { ciclo: "Electivos", codigo: "EEE016", nombre: "Seguridad y Salud en el Trabajo y Medio Ambiente", creditos: 3, prereq: [] }
+
     ];
 
     const estados = {}; // código: estado
