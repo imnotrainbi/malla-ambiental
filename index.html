@@ -19,9 +19,7 @@
 
   <script>
     function calcularCreditosAprobados() {
-      return cursos.reduce((total, c) => {
-        return estados[c.codigo] === "aprobado" ? total + c.creditos : total;
-      }, 0);
+      return cursos.reduce((total, c) => estados[c.codigo] === "aprobado" ? total + c.creditos : total, 0);
     }
 
     const cursos = [
@@ -108,7 +106,7 @@
       { ciclo: "X", codigo: "EEE IV", nombre: "Electivo IV", creditos: 3, prereq: [] }
 
       // ELECTIVOS OPCIONALES
-      { ciclo: "Electivos", codigo: "AMB069", nombre: "Tópicos de Producción Más Limpia", creditos: 3, prereq: [] },
+       { ciclo: "Electivos", codigo: "AMB069", nombre: "Tópicos de Producción Más Limpia", creditos: 3, prereq: [] },
       { ciclo: "Electivos", codigo: "AMB070", nombre: "Escenarios Climáticos", creditos: 3, prereq: [] },
       { ciclo: "Electivos", codigo: "AMB071", nombre: "Mecanismos de Retribución por Servicios Ecosistémicos", creditos: 3, prereq: [] },
       { ciclo: "Electivos", codigo: "AMB072", nombre: "Ecología Aplicada", creditos: 3, prereq: [] },
@@ -116,7 +114,6 @@
       { ciclo: "Electivos", codigo: "AMB040", nombre: "Instrumentación y Control Ambiental", creditos: 3, prereq: [] },
       { ciclo: "Electivos", codigo: "AMB073", nombre: "Sistemas Integrados de Gestión", creditos: 3, prereq: [] },
       { ciclo: "Electivos", codigo: "AMB033", nombre: "Energías No Convencionales", creditos: 3, prereq: [] },
-      { ciclo: "Electivos", codigo: "AMB032", nombre: "Contaminación Minera", creditos: 3, prereq: [] },
       { ciclo: "Electivos", codigo: "AMB074", nombre: "Control de Efluentes Gaseosos", creditos: 3, prereq: [] },
       { ciclo: "Electivos", codigo: "AMB075", nombre: "Evaluación y Manejo de Riesgos Naturales", creditos: 3, prereq: [] },
       { ciclo: "Electivos", codigo: "AMB076", nombre: "Manejo Ambiental de Áreas Protegidas y Ecoturismo", creditos: 3, prereq: [] },
