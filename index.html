@@ -177,7 +177,9 @@
         const cicloDiv = section.querySelector(`#ciclo-${ciclo}`);
         cursosCiclo.forEach(curso => {
           const estado = calcularEstado(curso);
+          if (estados[curso.codigo] !== "aprobado") {
           estados[curso.codigo] = estado;
+        }
 
           const card = document.createElement("div");
           card.className = `p-3 border rounded shadow-sm transition ${
