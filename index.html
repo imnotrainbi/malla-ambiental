@@ -212,9 +212,7 @@ function mostrarNotificacion(texto) {
         const cicloDiv = section.querySelector(`#ciclo-${ciclo}`);
         cursosCiclo.forEach(curso => {
           const estadoCalculado = calcularEstado(curso);
-          if (estados[curso.codigo] !== "aprobado") {
-            estados[curso.codigo] = estadoCalculado;
-          }
+          estados[curso.codigo] = (estados[curso.codigo] === "aprobado") ? "aprobado" : estadoCalculado;
 
           const card = document.createElement("div");
           card.dataset.estado = estados[curso.codigo];
