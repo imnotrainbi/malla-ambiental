@@ -4,17 +4,46 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Malla Curricular por Ciclo - Ing. Ambiental</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com">function reiniciarProgreso() {
+    if (confirm("¿Estás seguro de que deseas reiniciar todo tu progreso?")) {
+      localStorage.removeItem("estados-cursos");
+      location.reload();
+    }
+  }
+function filtrar(estadoFiltro) {
+  document.querySelectorAll("[data-estado]").forEach(card => {
+    card.style.display = (estadoFiltro === 'todos' || card.dataset.estado === estadoFiltro) ? "block" : "none";
+  });
+}
+</script>
   <style>
     .estado-aprobado { background-color: var(--color-aprobado); }
     .estado-en-curso { background-color: #fef9c3; }
     .estado-pendiente { background-color: #fef2f2; }
     .estado-bloqueado { background-color: #e5e7eb; color: #9ca3af; cursor: not-allowed; }
+  .animado {
+      animation: aprobado-pop 0.3s ease;
+    }
+
+    @keyframes aprobado-pop {
+      0% { transform: scale(1); box-shadow: 0 0 0 rgba(0,0,0,0); }
+      50% { transform: scale(1.05); box-shadow: 0 0 10px rgba(34,197,94,0.6); }
+      100% { transform: scale(1); box-shadow: 0 0 0 rgba(0,0,0,0); }
+    }
   </style>
 </head>
 <body class="bg-gray-100 text-gray-900 p-6">
   <h1 class="text-4xl font-bold mb-6 text-center">Malla Curricular por Ciclo - Ing. Ambiental</h1>
-  <div id="resumen-creditos" class="text-center text-lg font-semibold text-green-700 mb-6"></div>
+  <div id="resumen-creditos" class="text-center text-lg font-semibold text-green-700 mb-2"></div>
+  <div class="text-center mb-4 space-x-2">
+    <button onclick="filtrar('todos')" class="px-3 py-1 bg-gray-300 hover:bg-gray-400 rounded">Todos</button>
+    <button onclick="filtrar('aprobado')" class="px-3 py-1 bg-green-300 hover:bg-green-400 rounded">Aprobados</button>
+    <button onclick="filtrar('pendiente')" class="px-3 py-1 bg-yellow-200 hover:bg-yellow-300 rounded">Pendientes</button>
+    <button onclick="filtrar('bloqueado')" class="px-3 py-1 bg-gray-300 hover:bg-gray-400 rounded">Bloqueados</button>
+  </div>
+  <div class="text-center mb-6">
+    <button onclick="reiniciarProgreso()" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">Reiniciar progreso</button>
+  </div>
   <div id="contenedor-ciclos" class="space-y-4"></div>
 
   <script>
@@ -127,7 +156,7 @@
       return cursos.reduce((total, c) => estados[c.codigo] === "aprobado" ? total + c.creditos : total, 0);
     }
 
-    const estados = {};
+    const estados = JSON.parse(localStorage.getItem("estados-cursos") || '{}');
     const container = document.getElementById("contenedor-ciclos");
 
     function agruparPorCiclo(cursos) {
@@ -148,6 +177,7 @@
     }
 
     function render() {
+      localStorage.setItem("estados-cursos", JSON.stringify(estados));
       const cicloColores = {
         "I": "#dcfce7",
         "II": "#bbf7d0",
@@ -166,10 +196,11 @@
       const porCiclo = agruparPorCiclo(cursos);
       Object.entries(porCiclo).forEach(([ciclo, cursosCiclo]) => {
         const totalCred = cursosCiclo.reduce((sum, c) => sum + c.creditos, 0);
+        const aprobCred = cursosCiclo.reduce((sum, c) => estados[c.codigo] === 'aprobado' ? sum + c.creditos : sum, 0);
         const section = document.createElement("div");
         section.className = "bg-white rounded shadow-md p-4";
         section.innerHTML = `
-  <h2 class="text-xl font-semibold mb-2">Ciclo ${ciclo} <span class="text-sm text-gray-500">(${totalCred} créditos)</span></h2>
+  <h2 class="text-xl font-semibold mb-2">Ciclo ${ciclo} <span class="text-sm text-gray-500">(${aprobCred} / ${totalCred} créditos aprobados)</span></h2>
   <div class="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3" id="ciclo-${ciclo}"></div>
 `;
 
@@ -182,6 +213,7 @@
         }
 
           const card = document.createElement("div");
+          card.dataset.estado = estados[curso.codigo];
           card.className = `p-3 border rounded shadow-sm transition ${
             estados[curso.codigo] === "aprobado" ? "estado-aprobado" :
             estados[curso.codigo] === "pendiente" ? "estado-pendiente" :
@@ -203,6 +235,10 @@
           if (estados[curso.codigo] !== "bloqueado") {
             card.addEventListener("click", () => {
               estados[curso.codigo] = estados[curso.codigo] === "aprobado" ? "pendiente" : "aprobado";
+              if (estados[curso.codigo] === "aprobado") {
+                card.classList.add("animado");
+                setTimeout(() => card.classList.remove("animado"), 300);
+              }
               render();
             });
           }
