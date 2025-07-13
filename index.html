@@ -11,9 +11,11 @@
     }
   }
 function filtrar(estadoFiltro) {
+  filtroActivo = estadoFiltro;
   document.querySelectorAll("[data-estado]").forEach(card => {
     card.style.display = (estadoFiltro === 'todos' || card.dataset.estado === estadoFiltro) ? "block" : "none";
   });
+});
 }
 </script>
   <style>
@@ -47,6 +49,7 @@ function filtrar(estadoFiltro) {
   <div id="contenedor-ciclos" class="space-y-4"></div>
 
   <script>
+    let filtroActivo = "todos";
     function calcularCreditosAprobados() {
       return cursos.reduce((total, c) => estados[c.codigo] === "aprobado" ? total + c.creditos : total, 0);
     }
@@ -240,6 +243,7 @@ function filtrar(estadoFiltro) {
                 setTimeout(() => card.classList.remove("animado"), 300);
               }
               render();
+filtrar(filtroActivo);
             });
           }
 
