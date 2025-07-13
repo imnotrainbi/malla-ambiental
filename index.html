@@ -135,6 +135,12 @@
     }
 
     function calcularEstado(curso) {
+      function calcularCreditosAprobados() {
+  return cursos.reduce((total, c) => {
+    return estados[c.codigo] === "aprobado" ? total + c.creditos : total;
+  }, 0);
+}
+
       if (!curso.prereq.length) return "pendiente";
       const todosAprobados = curso.prereq.every(p => estados[p] === "aprobado");
       return todosAprobados ? "pendiente" : "bloqueado";
