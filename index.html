@@ -4,52 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Malla Curricular por Ciclo - Ing. Ambiental</title>
-  <script src="https://cdn.tailwindcss.com">function reiniciarProgreso() {
-  if (confirm("¿Estás seguro de que deseas reiniciar todo tu progreso?")) {
-    localStorage.removeItem("estados-cursos");
-    location.reload();
-  }
-}
-
-function mostrarNotificacion(texto) {
-  const notif = document.createElement("div");
-  notif.textContent = texto;
-  notif.className = "fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-md animate-bounce z-50";
-  document.body.appendChild(notif);
-  setTimeout(() => notif.remove(), 2000);
-}
-</script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .estado-aprobado { background-color: var(--color-aprobado); }
-    .estado-en-curso { background-color: #fef9c3; }
+    .estado-aprobado { background-color: #dcfce7; }
     .estado-pendiente { background-color: #fef2f2; }
     .estado-bloqueado { background-color: #e5e7eb; color: #9ca3af; cursor: not-allowed; }
-  .animado {
-      animation: aprobado-pop 0.3s ease;
-    }
-
-    @keyframes aprobado-pop {
-      0% { transform: scale(1); box-shadow: 0 0 0 rgba(0,0,0,0); }
-      50% { transform: scale(1.05); box-shadow: 0 0 10px rgba(34,197,94,0.6); }
-      100% { transform: scale(1); box-shadow: 0 0 0 rgba(0,0,0,0); }
-    }
   </style>
 </head>
 <body class="bg-gray-100 text-gray-900 p-6">
   <h1 class="text-4xl font-bold mb-6 text-center">Malla Curricular por Ciclo - Ing. Ambiental</h1>
-  <div id="resumen-creditos" class="text-center text-lg font-semibold text-green-700 mb-2"></div>
-  
-  <div class="text-center mb-6">
-    <button onclick="reiniciarProgreso()" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">Reiniciar progreso</button>
-  </div>
+  <div id="resumen-creditos" class="text-center text-lg font-semibold text-green-700 mb-6"></div>
   <div id="contenedor-ciclos" class="space-y-4"></div>
 
   <script>
-    let filtroActivo = "todos";
-    function calcularCreditosAprobados() {
-      return cursos.reduce((total, c) => estados[c.codigo] === "aprobado" ? total + c.creditos : total, 0);
-    }
-
     const cursos = [
       // CICLO I
       { ciclo: "I", codigo: "ANS006", nombre: "Antropología: Hombre, Cultura y Sociedad", creditos: 3, prereq: [] },
@@ -133,30 +100,21 @@ function mostrarNotificacion(texto) {
       { ciclo: "X", codigo: "AMB027", nombre: "Evaluación y Auditoría Ambiental", creditos: 4, prereq: ["AMB011"] },
       { ciclo: "X", codigo: "DER118", nombre: "Legislación Ambiental", creditos: 4, prereq: [], creditosMinimos: 170 },
       { ciclo: "X", codigo: "EEE IV", nombre: "Electivo IV", creditos: 3, prereq: [], creditosMinimos: 170 },
-
-
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     ];
+
+    const estados = {};
+    const container = document.getElementById("contenedor-ciclos");
 
     function calcularCreditosAprobados() {
       return cursos.reduce((total, c) => estados[c.codigo] === "aprobado" ? total + c.creditos : total, 0);
     }
 
-    const estados = JSON.parse(localStorage.getItem("estados-cursos") || '{}');
-    const container = document.getElementById("contenedor-ciclos");
+    function calcularEstado(curso) {
+      if (curso.creditosMinimos && calcularCreditosAprobados() < curso.creditosMinimos) return "bloqueado";
+      if (!curso.prereq.length) return "pendiente";
+      const todosAprobados = curso.prereq.every(p => estados[p] === "aprobado");
+      return todosAprobados ? "pendiente" : "bloqueado";
+    }
 
     function agruparPorCiclo(cursos) {
       return cursos.reduce((acc, cur) => {
@@ -166,65 +124,31 @@ function mostrarNotificacion(texto) {
       }, {});
     }
 
-    function calcularEstado(curso) {
-      if (curso.creditosMinimos && calcularCreditosAprobados() < curso.creditosMinimos) {
-        return "bloqueado";
-      }
-      if (!curso.prereq.length) return "pendiente";
-      const todosAprobados = curso.prereq.every(p => estados[p] === "aprobado");
-      return todosAprobados ? "pendiente" : "bloqueado";
-    }
-
     function render() {
-      localStorage.setItem("estados-cursos", JSON.stringify(estados));
-      const cicloColores = {
-        "I": "#dcfce7",
-        "II": "#bbf7d0",
-        "III": "#a7f3d0",
-        "IV": "#99f6e4",
-        "V": "#bfdbfe",
-        "VI": "#c4b5fd",
-        "VII": "#f0abfc",
-        "VIII": "#f9a8d4",
-        "IX": "#fdba74",
-        "X": "#fde68a"
-      };
       container.innerHTML = "";
-      document.getElementById("resumen-creditos").innerText = `Créditos aprobados: ${calcularCreditosAprobados()} / ${cursos.reduce((sum, c) => sum + c.creditos, 0)}`;
+      document.getElementById("resumen-creditos").innerText =
+        `Créditos aprobados: ${calcularCreditosAprobados()} / ${cursos.reduce((s, c) => s + c.creditos, 0)}`;
 
       const porCiclo = agruparPorCiclo(cursos);
       Object.entries(porCiclo).forEach(([ciclo, cursosCiclo]) => {
-        const totalCred = cursosCiclo.reduce((sum, c) => sum + c.creditos, 0);
-        const aprobCred = cursosCiclo.reduce((sum, c) => estados[c.codigo] === 'aprobado' ? sum + c.creditos : sum, 0);
         const section = document.createElement("div");
         section.className = "bg-white rounded shadow-md p-4";
         section.innerHTML = `
-  <h2 class="text-xl font-semibold mb-2">Ciclo ${ciclo} <span class="text-sm text-gray-500">(${aprobCred} / ${totalCred} créditos aprobados)</span></h2>
-  <div class="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3" id="ciclo-${ciclo}"></div>
-`;
-
+          <h2 class="text-xl font-semibold mb-2">Ciclo ${ciclo}</h2>
+          <div class="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3" id="ciclo-${ciclo}"></div>
+        `;
 
         const cicloDiv = section.querySelector(`#ciclo-${ciclo}`);
         cursosCiclo.forEach(curso => {
-          const estadoCalculado = calcularEstado(curso);
-          if (estados[curso.codigo] !== "aprobado") {
-            estados[curso.codigo] = estadoCalculado;
-          }
+          const estado = calcularEstado(curso);
+          estados[curso.codigo] = estados[curso.codigo] || estado;
 
           const card = document.createElement("div");
-          card.dataset.estado = estados[curso.codigo];
-          const estadoCurso = estados[curso.codigo];
           card.className = `p-3 border rounded shadow-sm transition ${
-            estadoCurso === "aprobado" ? "estado-aprobado" :
-            estadoCurso === "pendiente" ? "estado-pendiente" :
-            estadoCurso === "bloqueado" ? "estado-bloqueado" : "estado-en-curso"
+            estados[curso.codigo] === "aprobado" ? "estado-aprobado" :
+            estados[curso.codigo] === "pendiente" ? "estado-pendiente" :
+            "estado-bloqueado"
           }`;
-          if (estados[curso.codigo] === "aprobado") {
-            card.style.setProperty('--color-aprobado', cicloColores[curso.ciclo] || '#dcfce7');
-          }
-          if (estadoCurso === "bloqueado" && curso.creditosMinimos) {
-            card.title = `Se requiere mínimo ${curso.creditosMinimos} créditos aprobados.`;
-          }
 
           card.innerHTML = `
             <p class="font-bold">${curso.codigo}</p>
@@ -234,15 +158,8 @@ function mostrarNotificacion(texto) {
 
           if (estados[curso.codigo] !== "bloqueado") {
             card.addEventListener("click", () => {
-              const nuevoEstado = estados[curso.codigo] === "aprobado" ? "pendiente" : "aprobado";
-              estados[curso.codigo] = nuevoEstado;
-              mostrarNotificacion(`Progreso guardado: ${curso.nombre} marcado como ${estados[curso.codigo]}`);
-              if (estados[curso.codigo] === "aprobado") {
-                card.classList.add("animado");
-                setTimeout(() => card.classList.remove("animado"), 300);
-              }
+              estados[curso.codigo] = estados[curso.codigo] === "aprobado" ? "pendiente" : "aprobado";
               render();
-
             });
           }
 
