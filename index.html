@@ -124,51 +124,53 @@
       }, {});
     }
 
-    function render() {
-      container.innerHTML = "";
-      document.getElementById("resumen-creditos").innerText =
-        `Créditos aprobados: ${calcularCreditosAprobados()} / ${cursos.reduce((s, c) => s + c.creditos, 0)}`;
+function render() {
+  container.innerHTML = "";
+  document.getElementById("resumen-creditos").innerText =
+    `Créditos aprobados: ${calcularCreditosAprobados()} / ${cursos.reduce((s, c) => s + c.creditos, 0)}`;
 
-      const porCiclo = agruparPorCiclo(cursos);
-      Object.entries(porCiclo).forEach(([ciclo, cursosCiclo]) => {
-        const section = document.createElement("div");
-        section.className = "bg-white rounded shadow-md p-4";
-        section.innerHTML = `
-          <h2 class="text-xl font-semibold mb-2">Ciclo ${ciclo}</h2>
-          <div class="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3" id="ciclo-${ciclo}"></div>
-        `;
+  const porCiclo = agruparPorCiclo(cursos);
+  Object.entries(porCiclo).forEach(([ciclo, cursosCiclo]) => {
+    const section = document.createElement("div");
+    section.className = "bg-white rounded shadow-md p-4";
+    section.innerHTML = `
+      <h2 class="text-xl font-semibold mb-2">Ciclo ${ciclo}</h2>
+      <div class="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3" id="ciclo-${ciclo}"></div>
+    `;
 
-        const cicloDiv = section.querySelector(`#ciclo-${ciclo}`);
-        cursosCiclo.forEach(curso => {
-          const estado = calcularEstado(curso);
-          estados[curso.codigo] = estados[curso.codigo] || estado;
+    const cicloDiv = section.querySelector(`#ciclo-${ciclo}`);
+    cursosCiclo.forEach(curso => {
+      // 👉 recalculamos estado siempre
+      const estado = calcularEstado(curso);
+      estados[curso.codigo] = estados[curso.codigo] === "aprobado" ? "aprobado" : estado;
 
-          const card = document.createElement("div");
-          card.className = `p-3 border rounded shadow-sm transition ${
-            estados[curso.codigo] === "aprobado" ? "estado-aprobado" :
-            estados[curso.codigo] === "pendiente" ? "estado-pendiente" :
-            "estado-bloqueado"
-          }`;
+      const card = document.createElement("div");
+      card.className = `p-3 border rounded shadow-sm transition ${
+        estados[curso.codigo] === "aprobado" ? "estado-aprobado" :
+        estados[curso.codigo] === "pendiente" ? "estado-pendiente" :
+        "estado-bloqueado"
+      }`;
 
-          card.innerHTML = `
-            <p class="font-bold">${curso.codigo}</p>
-            <p>${curso.nombre}</p>
-            <p class="text-sm text-gray-600">${curso.creditos} créditos</p>
-          `;
+      card.innerHTML = `
+        <p class="font-bold">${curso.codigo}</p>
+        <p>${curso.nombre}</p>
+        <p class="text-sm text-gray-600">${curso.creditos} créditos</p>
+      `;
 
-          if (estados[curso.codigo] !== "bloqueado") {
-            card.addEventListener("click", () => {
-              estados[curso.codigo] = estados[curso.codigo] === "aprobado" ? "pendiente" : "aprobado";
-              render();
-            });
-          }
-
-          cicloDiv.appendChild(card);
+      if (estados[curso.codigo] !== "bloqueado") {
+        card.addEventListener("click", () => {
+          estados[curso.codigo] = estados[curso.codigo] === "aprobado" ? "pendiente" : "aprobado";
+          render(); // 👉 actualiza todo el tablero
         });
+      }
 
-        container.appendChild(section);
-      });
-    }
+      cicloDiv.appendChild(card);
+    });
+
+    container.appendChild(section);
+  });
+}
+
 
     render();
   </script>
